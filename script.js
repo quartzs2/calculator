@@ -107,7 +107,7 @@ function handleOperator(btnText) {
     return;
   }
 
-  if (firstOperand && operator) {
+  if (firstOperand !== null && operator !== null) {
     // 기존 연산이 있을 경우 처리
     calculateResultInOperator(btnText);
   } else if (!needNext) {
