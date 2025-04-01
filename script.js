@@ -1,3 +1,44 @@
+const display = document.querySelector(".display-container");
+const buttonElems = document.querySelectorAll(".button");
+
+let firstOperand = null;
+let secondOperand = null;
+let operator = null;
+let needNext = false;
+
+buttonElems.forEach((button) => {
+  button.addEventListener("click", btnClickHandler);
+});
+
+function btnClickHandler(e) {
+  console.log(e.target.textContent);
+  const btnText = e.target.textContent;
+
+  switch (btnText) {
+    case "C":
+      clearDisplay();
+      break;
+    case ".":
+      addDot();
+      break;
+    case "=":
+      calculateResult();
+      break;
+    default:
+      if (e.target.classList.contains("number")) {
+        if (needNext) {
+          display.textContent = "0";
+          needNext = false;
+        }
+        addNumber(btnText);
+      }
+      if (e.target.classList.contains("operator")) {
+        handleOperator(btnText);
+      }
+      break;
+  }
+}
+
 function calculate(firstOperand, secondOperand, operator) {
   const formulas = {
     "+": (first, second) => first + second,
@@ -59,6 +100,13 @@ function addNumber(number) {
 }
 
 function handleOperator(btnText) {
+  if (needNext) {
+    // 연산자만 변경
+    operator = btnText;
+    console.log("Operator: ", operator);
+    return;
+  }
+
   if (firstOperand && operator) {
     // 기존 연산이 있을 경우 처리
     calculateResultInOperator(btnText);
@@ -68,44 +116,3 @@ function handleOperator(btnText) {
   console.log("First Operand: ", firstOperand);
   console.log("Operator: ", operator);
 }
-
-function btnClickHandler(e) {
-  console.log(e.target.textContent);
-  const btnText = e.target.textContent;
-
-  switch (btnText) {
-    case "C":
-      clearDisplay();
-      break;
-    case ".":
-      addDot();
-      break;
-    case "=":
-      calculateResult();
-      break;
-    default:
-      if (e.target.classList.contains("number")) {
-        if (needNext) {
-          display.textContent = "0";
-          needNext = false;
-        }
-        addNumber(btnText);
-      }
-      if (e.target.classList.contains("operator")) {
-        handleOperator(btnText);
-      }
-      break;
-  }
-}
-
-const display = document.querySelector(".display-container");
-const buttonElems = document.querySelectorAll(".button");
-
-let firstOperand = null;
-let secondOperand = null;
-let operator = null;
-let needNext = false;
-
-buttonElems.forEach((button) => {
-  button.addEventListener("click", btnClickHandler);
-});
